@@ -1,12 +1,9 @@
 package ee.ria.taraauthserver.authentication.webauthn;
 
-import ee.ria.taraauthserver.error.ErrorCode;
 import ee.ria.taraauthserver.error.exceptions.BadRequestException;
 import ee.ria.taraauthserver.logging.StatisticsLogger;
 import ee.ria.taraauthserver.session.SessionUtils;
-import ee.ria.taraauthserver.session.TaraAuthenticationState;
 import ee.ria.taraauthserver.session.TaraSession;
-import org.springframework.http.HttpStatus;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.Session;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.http.ResponseEntity;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 import javax.cache.Cache;
-import java.util.EnumSet;
 
 import static ee.ria.taraauthserver.error.ErrorCode.SESSION_NOT_FOUND;
 import static ee.ria.taraauthserver.error.ErrorCode.INVALID_REQUEST;
@@ -30,8 +24,6 @@ import static ee.ria.taraauthserver.session.TaraAuthenticationState.WEBAUTHN_AUT
 import static ee.ria.taraauthserver.session.TaraAuthenticationState.WEBAUTHN_REGISTRATION_CANCELED;
 import static ee.ria.taraauthserver.session.TaraSession.TARA_SESSION;
 import static ee.ria.taraauthserver.session.TaraAuthenticationState.WAITING_WEBAUTHN_RESPONSE;
-import static java.lang.String.format;
-import static java.util.EnumSet.of;
 import static java.util.Objects.requireNonNull;
 import static net.logstash.logback.argument.StructuredArguments.value;
 

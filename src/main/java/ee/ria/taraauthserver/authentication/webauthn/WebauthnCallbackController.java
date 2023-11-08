@@ -15,7 +15,6 @@ import org.springframework.session.Session;
 import ee.ria.taraauthserver.session.TaraSession;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
@@ -26,14 +25,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;  
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.HttpClientErrorException;
+// import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -47,20 +44,16 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static ee.ria.taraauthserver.error.ErrorCode.INVALID_REQUEST;
-import static ee.ria.taraauthserver.error.ErrorCode.WEBAUTHN_AUTHENTICATION_FAILED;
+// import static ee.ria.taraauthserver.error.ErrorCode.WEBAUTHN_AUTHENTICATION_FAILED;
 import static ee.ria.taraauthserver.error.ErrorCode.SESSION_NOT_FOUND;
 import static ee.ria.taraauthserver.error.ErrorCode.ERROR_GENERAL;
 import static ee.ria.taraauthserver.error.ErrorCode.WEBAUTHN_INTERNAL_ERROR;
 import static ee.ria.taraauthserver.logging.ClientRequestLogger.Service;
 import static ee.ria.taraauthserver.session.TaraAuthenticationState.WEBAUTHN_AUTHENTICATION_COMPLETED;
 import static ee.ria.taraauthserver.security.NoSessionCreatingHttpSessionCsrfTokenRepository.CSRF_TOKEN_ATTR_NAME;
-import static ee.ria.taraauthserver.session.TaraAuthenticationState.INIT_AUTH_PROCESS;
-import static ee.ria.taraauthserver.session.TaraAuthenticationState.AUTHENTICATION_SUCCESS;
 import static ee.ria.taraauthserver.session.TaraSession.TARA_SESSION;
 import static ee.ria.taraauthserver.session.TaraAuthenticationState.WAITING_WEBAUTHN_RESPONSE;
 import static net.logstash.logback.argument.StructuredArguments.value;
@@ -172,12 +165,12 @@ public class WebauthnCallbackController {
         }
     }
 
-    private void handle422Exception(HttpClientErrorException.UnprocessableEntity e) {
-        if (e.getMessage() != null && e.getMessage().contains(VERIFICATION_FAILED))
-            throw new BadRequestException(WEBAUTHN_AUTHENTICATION_FAILED, e.getMessage(), e);
-        else
-            throw new BadRequestException(ERROR_GENERAL, e.getMessage(), e);
-    }
+    // private void handle422Exception(HttpClientErrorException.UnprocessableEntity e) {
+    //     if (e.getMessage() != null && e.getMessage().contains(VERIFICATION_FAILED))
+    //         throw new BadRequestException(WEBAUTHN_AUTHENTICATION_FAILED, e.getMessage(), e);
+    //     else
+    //         throw new BadRequestException(ERROR_GENERAL, e.getMessage(), e);
+    // }
 
     private void validateResponse(WebauthnClientResponse response) {
         Set<ConstraintViolation<WebauthnClientResponse>> constraintViolations = validator.validate(response);
