@@ -55,7 +55,7 @@ public class WebauthnController {
     }
 
     @PostMapping(value = "/auth/webauthn/register", produces = MediaType.TEXT_HTML_VALUE)
-    public RedirectView webauthnRegister(@RequestParam(name = "WebauthnUserId") String webauthnUserId,
+    public RedirectView webauthnRegister(@RequestParam(name = "WebauthnRegId") String webauthnRegId,
                                          @SessionAttribute(value = TARA_SESSION, required = false) TaraSession taraSession) {
         String relayState = UUID.randomUUID().toString();
         String clientId = taraSession.getLoginRequestInfo().getClientId();
@@ -64,7 +64,7 @@ public class WebauthnController {
         webauthnRelayStateCache.put(relayState, taraSession.getSessionId());
 
         taraSession.setState(WAITING_WEBAUTHN_RESPONSE);
-        return new RedirectView(taraProperties.getEeidService().getWebauthnRegisterUrl() + "?client_id=" + clientId + "&webauthn_user_id=" + webauthnUserId + "&relay_state=" + relayState);
+        return new RedirectView(taraProperties.getEeidService().getWebauthnRegisterUrl() + "?client_id=" + clientId + "&webauthn_reg_id=" + webauthnRegId + "&relay_state=" + relayState);
     }
 
     private void updateSession(TaraSession taraSession, String relayState) {
