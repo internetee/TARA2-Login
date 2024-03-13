@@ -109,11 +109,15 @@ class AuthAcceptController {
 
     private LoginAcceptRequestBody createRequestBody(TaraSession taraSession) {
         TaraSession.AuthenticationResult authenticationResult = taraSession.getAuthenticationResult();
-        Assert.notNull(authenticationResult.getAcr(), "Mandatory 'acr' value is missing from authentication!");
+        // Assert.notNull(authenticationResult.getAcr(), "Mandatory 'acr' value is missing from authentication!");
+        String acr = "";
+        if (authenticationResult.getAcr() != null) {
+            acr = authenticationResult.getAcr().getAcrName();
+        }
         Assert.notNull(authenticationResult.getSubject(), "Mandatory 'subject' value is missing from authentication!");
         return new LoginAcceptRequestBody(
                 false,
-                authenticationResult.getAcr().getAcrName(),
+                acr,
                 List.of(authenticationResult.getAmr().getAmrName()),
                 authenticationResult.getSubject());
     }

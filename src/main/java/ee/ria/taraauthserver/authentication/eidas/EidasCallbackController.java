@@ -150,7 +150,8 @@ public class EidasCallbackController {
         authenticationResult.setEmail(response.getAttributes().getEmail());
         if (dateOfBirth != null)
             authenticationResult.setDateOfBirth(LocalDate.parse(dateOfBirth));
-        authenticationResult.setAcr(LevelOfAssurance.findByFormalName(response.getLevelOfAssurance()));
+        if (response.getLevelOfAssurance() != null)
+            authenticationResult.setAcr(LevelOfAssurance.findByFormalName(response.getLevelOfAssurance()));
         authenticationResult.setSubject(personIdentifier);
         taraSession.setAuthenticationResult(authenticationResult);
         session.setAttribute(TARA_SESSION, taraSession);
@@ -210,7 +211,7 @@ public class EidasCallbackController {
 
     @Data
     private static class EidasClientResponse implements Serializable {
-        @NotBlank
+        // @NotBlank
         @JsonProperty("acr")
         private String levelOfAssurance;
         @NotNull
