@@ -4,6 +4,7 @@ import ee.ria.taraauthserver.config.properties.AuthConfigurationProperties;
 import ee.ria.taraauthserver.config.properties.AuthConfigurationProperties.WebauthnConfigurationProperties;
 import ee.ria.taraauthserver.config.properties.TaraScope;
 import ee.ria.taraauthserver.logging.ClientRequestLogger;
+import ee.ria.taraauthserver.logging.ClientRequestLogger.Service;
 import ee.ria.taraauthserver.logging.StatisticsLogger;
 import ee.ria.taraauthserver.session.SessionUtils;
 import ee.ria.taraauthserver.session.TaraAuthenticationState;
@@ -133,15 +134,15 @@ public class AuthConsentConfirmController {
 
         taraSession.setState(CONSENT_GIVEN);
 
-        if (response.getStatusCode() == HttpStatus.CREATED && response.getBody() != null && response.getBody().get(WEBAUTHN_REG_ID) != null) {
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null && response.getBody().get(WEBAUTHN_REG_ID) != null) {
             return createWebauthnRegisterView(model, taraSession, response.getBody().get(WEBAUTHN_REG_ID));
         } else {
             throw new IllegalStateException("Invalid EEID server response.");
         }
     }
 
-    private String createWebauthnRegisterView(Model model, TaraSession taraSession, String userId) {
-        model.addAttribute("webauthn_user_id", userId);
+    private String createWebauthnRegisterView(Model model, TaraSession taraSession, String regId) {
+        model.addAttribute("webauthn_reg_id", regId);
         return "redirectToWebauthnRegister";
     }
 
